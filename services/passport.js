@@ -5,6 +5,14 @@ const mongoose = require('mongoose')
 
 const User = mongoose.model('users')
 
+passport.serializeUser((user, done) => {
+  done(null, user.id)
+})
+
+passport.deserializeUser((id, done) => {
+  User.findById(id).then(user => done(null, user))
+})
+
 passport.use(
   new GoogleStrategy(
     {
@@ -12,11 +20,14 @@ passport.use(
       clientSecret: keys.googleClientSecret,
       callbackURL: '/auth/google/callback'
     },
-    (accessToken, refreshToken, profile, cb) => {
+    (accessToken, refreshToken, profile, done) => {
       try {
         User.findOne({ googleId: profile.id }).then(existingUser => {
-          if (existingUser) return
-          new User({ googleId: profile.id }).save()
+          if (existingUser) {
+            done(null, existingUser)
+          } else {
+            new User({ googleId: profile.id }).save().then(user => done(null, user))
+          }
         })
       } catch (err) {
         throw new Error('Can not create a new user. ', err)
