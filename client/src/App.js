@@ -1,23 +1,31 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, Component } from 'react'
 import { Route } from 'react-router-dom'
+import * as actions from './actions'
 import Header from './components/Header'
 import 'materialize-css/dist/css/materialize.min.css'
+import { connect } from 'react-redux'
 
 const Dashboard = () => <h2>Dashboard</h2>
 const SurveyNew = () => <h2>SurveyNew</h2>
 const Landing = () => <h2>Landing</h2>
 
-const App = () => {
-  return (
-    <Fragment>
-      <Header />
-      <div className='container'>
-        <Route exact path='/' component={Landing} />
-        <Route exact path='/surveys' component={Dashboard} />
-        <Route exact path='/surveys/new' component={SurveyNew} />
-      </div>
-    </Fragment>
-  )
+class App extends Component {
+  componentDidMount = () => {
+    this.props.fetchUser()
+  }
+
+  render() {
+    return (
+      <Fragment>
+        <Header />
+        <div className='container'>
+          <Route exact path='/' component={Landing} />
+          <Route exact path='/surveys' component={Dashboard} />
+          <Route exact path='/surveys/new' component={SurveyNew} />
+        </div>
+      </Fragment>
+    )
+  }
 }
 
-export default App
+export default connect(null, actions)(App)

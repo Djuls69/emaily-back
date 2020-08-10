@@ -1,7 +1,21 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
+
+const mapState = ({ auth }) => ({ auth })
 
 export class Header extends Component {
+  renderContent = () => {
+    switch (this.props.auth) {
+      case null:
+        return
+      case false:
+        return <a href='/auth/google'>Se connecter avec Google</a>
+      default:
+        return <a href='/api/logout'>Se déconnecter</a>
+    }
+  }
+
   render() {
     return (
       <nav>
@@ -11,9 +25,7 @@ export class Header extends Component {
               Emaily
             </Link>
             <ul id='nav-mobile' className='right hide-on-med-and-down'>
-              <li>
-                <a href='/auth/google'>Se connecter avec Google</a>
-              </li>
+              <li>{this.renderContent()}</li>
             </ul>
           </div>
         </div>
@@ -22,4 +34,4 @@ export class Header extends Component {
   }
 }
 
-export default Header
+export default connect(mapState)(Header)
