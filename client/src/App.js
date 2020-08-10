@@ -1,12 +1,22 @@
-import React from 'react'
-import './App.css'
+import React, { Fragment } from 'react'
+import { Route } from 'react-router-dom'
+import Header from './components/Header'
+import 'materialize-css/dist/css/materialize.min.css'
+
+const Dashboard = () => <h2>Dashboard</h2>
+const SurveyNew = () => <h2>SurveyNew</h2>
+const Landing = () => <h2>Landing</h2>
 
 const App = () => {
   return (
-    <div>
-      <h1>My App</h1>
-      <a href='/auth/google'>Sign In With Google</a>
-    </div>
+    <Fragment>
+      <Header />
+      <div className='container'>
+        <Route exact path='/' component={Landing} />
+        <Route exact path='/surveys' component={Dashboard} />
+        <Route exact path='/surveys/new' component={SurveyNew} />
+      </div>
+    </Fragment>
   )
 }
 
