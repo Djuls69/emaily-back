@@ -5,6 +5,7 @@ const App = () => {
   return (
     <div>
       <h1>My App</h1>
+      <a href='/auth/google'>Sign In With Google</a>
     </div>
   )
 }
